@@ -1,0 +1,88 @@
+import { Template } from 'meteor/templating';
+import { _ } from 'meteor/underscore';
+import { Session } from 'meteor/session';
+
+import { OHIF } from 'meteor/ohif:core';
+import { thumbnailDragHandlers } from '../../../lib/thumbnailDragHandlers';
+
+Template.thumbnailEntry.onCreated(() => {
+    const instance = Template.instance();
+
+// Check if the thumbnails will be draggable or clickable
+instance.isDragAndDrop = _.isUndefined(instance.data.viewportIndex);
+});
+
+Template.thumbnailEntry.events({
+    // Event handlers for drag and drop
+    'touchstart .thumbnailEntry, mousedown .thumbnailEntry'(event, instance) {
+        const data = instance.data.thumbnail.stack;
+        instance.isDragAndDrop && thumbnailDragHandlers.thumbnailDragStartHandler(event, data);
+    },
+
+    'touchmove .thumbnailEntry'(event, instance) {
+        instance.isDragAndDrop && thumbnailDragHandlers.thumbnailDragHandler(event);
+    },
+
+    'touchend .thumbnailEntry'(event, instance) {
+        const data = instance.data.thumbnail.stack;
+        instance.isDragAndDrop && thumbnailDragHandlers.thumbnailDragEndHandler(event, data);
+    },
+
+    // Event handlers for click (quick switch)
+    'click .thumbnailEntry'(event, instance) {
+        if (!instance.isDragAndDrop) {
+            // Get the thumbnail stack data
+            const data = instance.data.thumbnail.stack;
+
+            // Rerender the viewport using the clicked thumbnail data
+            OHIF.viewerbase.layoutManager.rerenderViewportWithNewDisplaySet(instance.data.viewportIndex, data);
+        }
+    },
+
+    // Event handlers for double click
+    'dblclick .thumbnailEntry'(event, instance) {
+        if (instance.isDragAndDrop) {
+            // Get the active viewport index and total number of viewports...
+            const viewportCount = OHIF.viewerbase.layoutManager.getNumberOfViewports();
+            let viewportIndex = Session.get('activeViewport') || 0;
+            if (viewportIndex >= viewportCount) {
+                viewportIndex = viewportCount > 0 ? viewportCount - 1 : 0;
+            }
+
+            // Get the thumbnail stack data
+            const data = instance.data.thumbnail.stack;
+
+            // Rerender the viewport using the clicked thumbnail data
+            OHIF.viewerbase.layoutManager.rerenderViewportWithNewDisplaySet(viewportIndex, data);
+        }
+    }
+});
+
+Template.thumbnailEntry.helpers({
+    draggableClass() {
+        return Template.instance().isDragAndDrop ? 'draggable' : '';
+    },
+    instanceNumber() {
+        const thumbnail = Template.instance().data.thumbnail;
+        if (!thumbnail) {
+            return;
+        }
+
+        const stack = thumbnail.stack;
+        if (!stack) {
+            return;
+        }
+
+        //  No need to show instance number for single-frame images
+        if (!stack.isMultiFrame) {
+            return;
+        }
+
+        const firstImage = stack.images[0];
+        if (!firstImage) {
+            return;
+        }
+
+        return firstImage.instanceNumber;
+    }
+});

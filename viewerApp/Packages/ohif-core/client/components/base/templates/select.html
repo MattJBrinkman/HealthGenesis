@@ -1,0 +1,18 @@
+<template name="baseSelect">
+    <select
+        id="{{this.id}}"
+        class="{{this.class}}"
+        name="{{this.name}}"
+        multiple="{{#if this.multiple}}multiple{{/if}}"
+        disabled="{{#if this.disabled}}disabled{{/if}}"
+        {{this.tagAttributes}}
+    >
+        {{>UI.contentBlock}}
+        {{#each item in (reactive this.items)}}
+            <option
+                value="{{item.value}}"
+                selected="{{#if eq item.value (reactive this.value)}}selected{{/if}}"
+            >{{item.label}}</option>
+        {{/each}}
+    </select>
+</template>
