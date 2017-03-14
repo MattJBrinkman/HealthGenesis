@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
 
-import Home from './home';
+import Container from './container';
 
 export default function renderRoutes() {
   return <Router>
-    <Route path="/" component={Home} />
+    <Route path="/" component={Container} />
   </Router>;
 }
