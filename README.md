@@ -39,3 +39,6 @@ console 3:
 > PROXIED_SERVER=http://some-host:some-port  meteor --port 4444
 
 Note that port 4444 is ignored here. The actual port to use to connect to Orthanc is 9042.
+
+All applications can accept an additional environment variable: ETH_INSTANCE_URL which takes the
+form of http(s)://host:port and defaults to http://localhost:8545.

@@ -25,3 +25,4 @@ less
 react-meteor-data
 aldeed:simple-schema
 aldeed:collection2
+accounts-base
