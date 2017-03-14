@@ -1,2 +1,2 @@
 # HealthGenesis
-Publci repository for the Health Genesis project.
+Public repository for the Health Genesis project.
