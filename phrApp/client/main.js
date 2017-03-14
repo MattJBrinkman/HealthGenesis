@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Connect } from 'uport-connect'
-let uport = new Connect('MyDApp')
+//let uport = new Connect('MyDApp')
 
 import './main.html';
 

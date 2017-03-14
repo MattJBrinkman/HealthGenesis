@@ -26,6 +26,8 @@ console 2:
 
 > meteor npm install
 
+> rm node_modules/crypto
+
 > meteor --port 3100
 
 console 3:

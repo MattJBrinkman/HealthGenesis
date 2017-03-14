@@ -12,7 +12,9 @@ function search(url, query) {
     }
   }).then(function (response) {
     if (!response.ok) {
-      throw new Error(response.statusCode);
+      return response.text().then(function (body) {
+        throw new Error(`${response.status} ${response.statusText} ${body}`);
+      });
     }
     return response.json();
   })

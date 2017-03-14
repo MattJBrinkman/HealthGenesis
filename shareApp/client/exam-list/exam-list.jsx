@@ -3,6 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 
 import ExamQuery from '../exam-query';
 import qido from '../qido';
+import createResource from '../createResource';
 
 export default class ExamList extends Component {
   constructor(props) {
@@ -91,7 +92,11 @@ export default class ExamList extends Component {
 
   doShare() {
     const { studyUid, recipientAddress } = this.state;
-    console.log('Yo, I sharing');
+    var wadoUriRoot = this.props.qidoUrl.replace('qidors', 'wadors');
+    var resourceUrl = wadoUriRoot + '/' + studyUid;
+    createResource(resourceUrl, recipientAddress).then(() => {
+      this.closeModal();
+    });
   }
 }
 
