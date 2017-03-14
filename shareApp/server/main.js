@@ -8,8 +8,13 @@ Meteor.startup(() => {
 
   var address = getOrCreateTestInstanceAddress();
   console.log('using test instance @ ', address);
-  var instance = resource.contract.at(address);
-  console.log('owner:', instance.owner());
-  console.log('url:', instance.url());
-  console.log('recipient:', instance.recipient());
+  try {
+    var instance = resource.contract.at(address);
+    console.log('owner:', instance.owner());
+    console.log('url:', instance.url());
+    console.log('recipient:', instance.recipient());
+  } catch(err) {
+    console.log("ERROR accessing smart contract instance", err);
+
+  }
 });

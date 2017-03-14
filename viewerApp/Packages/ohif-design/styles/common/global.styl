@@ -1,0 +1,84 @@
+@import "{ohif:design}/app"
+
+html body
+  font-family: 'Roboto', 'OpenSans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
+
+html hr
+  theme('border-top', '1px solid $uiBorderColor')
+
+body .table > thead > tr > th
+  theme('border-color', '$uiBorderColor')
+
+body ol
+  margin: 0
+  padding-left: 1em
+
+label.form-group
+  width: 100%
+
+  &>span.select2
+    display: block
+    width: 100% !important
+
+    span.select2-selection
+      min-height: 34px
+
+      span.select2-selection__rendered
+          height: 34px
+          line-height: 34px
+
+      span.select2-selection__arrow
+          height: 34px
+
+.center-table
+  display: table
+  margin-left: auto
+  margin-right: auto
+
+.height-auto
+  height: auto !important
+
+.caret-down
+  display: inline-block
+  width: 0
+  height: 0
+  margin-top: .5rem
+  border-top: 5px solid
+  border-right: 5px solid transparent
+  border-left: 5px solid transparent
+
+.noselect
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+.btn
+  transition(background-color 0.3s ease)
+
+.modal-dialog
+  .modal-content
+    theme('background', '$primaryBackgroundColor')
+    theme('border-color', '$uiBorderColor')
+    theme('color', '$textSecondaryColor')
+
+    .modal-header, .modal-footer
+      theme('border-color', '$uiBorderColor')
+
+  button.close
+    theme('color', '$textSecondaryColor')
+    opacity: 1
+    overflow: hidden
+    text-align: center
+    text-shadow: none
+    width: 20px
+
+    span
+      display: block
+      line-height: 20px
+      transition(transform 0.3s ease)
+
+    &:hover span
+      transform(rotate(180deg))
