@@ -11,7 +11,7 @@ export default class Home extends Component {
     this.state = {
       // qidoUrl: 'https://dicomcloud.azurewebsites.net/qidors/studies'
       // qidoUrl: 'http://pacsemulator.cloudapp.net:8042/dicom-web/studies'
-      qidoUrl: 'http://localhost:9042'
+      qidoUrl: 'http://localhost:9042/dicom-web/studies'
     };
   }
 

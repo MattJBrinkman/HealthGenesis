@@ -6,7 +6,12 @@ function buildQueryString(query) {
 }
 
 function search(url, query) {
-  return fetch(url + '?' + buildQueryString(query), {
+  const queryString = buildQueryString(query);
+  let finalUrl = url;
+  if (queryString) {
+    finalUrl += '?' + queryString;
+  }
+  return fetch(finalUrl, {
     headers: {
       'Accept': 'application/json'
     }

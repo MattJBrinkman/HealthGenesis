@@ -17,12 +17,15 @@ const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const continueOn = checkBlockChain(req);
   if (continueOn) {
+    console.log('Proxying', req.url);
     proxy.web(req, res, opts);
   } else {
     res.statusCode = 403;
     res.end();
   }
-}).listen(9042);
+}).listen(9042, function () {
+  console.log('Ready at http://localhost:9042');
+});
 
 function handleOptionsRequest(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT');
