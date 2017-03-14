@@ -93,11 +93,12 @@ export default class ExamList extends Component {
   doShare() {
     const { studyUid, recipientAddress } = this.state;
     // create the wado-rs uri
+    var resourceId = studyUid;
     var wadoRsUri = this.props.qidoUrl + '/' + studyUid;
-    createResource(wadoRsUri, recipientAddress).then(() => {
+    createResource(wadoRsUri, recipientAddress, resourceId, 'wadors').then(() => {
       // create the wado-uri uri
       var wadoUriUrl = wadoRsUri.replace('dicom-web', 'wado');
-      createResource(wadoUriUrl, recipientAddress).then(() => {
+      createResource(wadoUriUrl, recipientAddress, resourceId, 'wadouri').then(() => {
         this.closeModal();
       });
     });

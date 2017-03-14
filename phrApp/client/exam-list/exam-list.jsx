@@ -25,13 +25,17 @@ class ExamList extends Component {
     return <table className="table">
       <thead>
       <tr>
-        <th>URL</th>
+        <th>Timestamp</th>
+        <th>Block#</th>
+        <th>StudyUID</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
       {shares.map((row, ix) => <tr key={ix}>
-        <td>{row.url}</td>
+      <td>{row.timeStamp.toString()}</td>
+      <td>{row.blockNumber}</td>
+        <td>{row.resourceId}</td>
         <td>
           <a href={row.url} target="_blank" className="btn btn-primary">
             <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Images

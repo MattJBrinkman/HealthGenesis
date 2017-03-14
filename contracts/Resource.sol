@@ -14,14 +14,23 @@ contract Resource {
   // recipient owns the private key.
   address public recipient;
 
+  // an identifier that can be used to group multiple resource smart contracts
+  // together.  In the case of DICOM, it could be the study instance uid
+  string public resourceId;
+
+  // the type of resource (e.g. wadouri, wadors)
+  string public resourceType;
+
   // Event that is fired every time a resoruce smart contract is created.
   // Needed to reliably find resource smart contracts
   event ResourceCreated(address indexed recipient);
 
-  function Resource(address _recipient, string _url) {
+  function Resource(address _recipient, string _url, string _resourceId, string _resourceType) {
     owner = msg.sender;
     recipient = _recipient;
     url = _url;
+    resourceId = _resourceId;
+    resourceType = _resourceType;
     ResourceCreated(recipient);
   }
 

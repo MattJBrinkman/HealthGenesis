@@ -12,6 +12,8 @@ if (Meteor.isServer) {
       recipientAddress
     });
   });
+
+  SharesCollection._ensureIndex({ resourceId: 1 }, { unique: true })
 }
 
 export default SharesCollection;

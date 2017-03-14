@@ -4,7 +4,21 @@ export default new SimpleSchema({
   recipientAddress: {
     type: String
   },
-  url: {
+  resourceId: {
     type: String
+  },
+  wadoUriBaseUrl: {
+    type: String,
+    optional: true
+  },
+  dicomWebBaseUrl: {
+    type: String,
+    optional: true
+  },
+  blockNumber: {
+    type: Number
+  },
+  timeStamp: {
+    type: Date
   }
 });
