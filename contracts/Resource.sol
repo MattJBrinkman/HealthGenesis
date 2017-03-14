@@ -14,10 +14,15 @@ contract Resource {
   // recipient owns the private key.
   address public recipient;
 
+  // Event that is fired every time a resoruce smart contract is created.
+  // Needed to reliably find resource smart contracts
+  event ResourceCreated(address indexed recipient);
+
   function Resource(address _recipient, string _url) {
-    owner = mesg.sender;
+    owner = msg.sender;
     recipient = _recipient;
     url = _url;
+    ResourceCreated(recipient);
   }
 
 }
