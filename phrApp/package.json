@@ -10,7 +10,12 @@
     "ethereumjs-tx": "^1.2.2",
     "ethereumjs-util": "^5.1.0",
     "keythereum": "^0.3.2",
+    "lodash": "^4.17.4",
     "meteor-node-stubs": "~0.2.4",
+    "react": "^15.4.2",
+    "react-addons-pure-render-mixin": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router-dom": "^4.0.0",
     "uport-connect": "^0.5.3",
     "web3": "^0.18.2"
   }
