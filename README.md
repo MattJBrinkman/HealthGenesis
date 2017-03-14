@@ -26,10 +26,11 @@ console 2:
 
 > meteor npm install
 
+> rm node_modules/crypto
+
 > meteor --port 3100
 
 # Run the proxy
 node authProxy.js
 
 Connect to Orthanc via port 9042. when proxy is running.
- 
