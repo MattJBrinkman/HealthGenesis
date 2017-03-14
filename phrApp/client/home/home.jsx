@@ -71,8 +71,10 @@ class Home extends Component {
   onRegister() {
     const ethId = loGet(window, 'web3.eth.accounts[0]');
     console.log('register', ethId);
-    loginWithEthereum(null, function (err, result) {
-      console.log(err, result);
+    loginWithEthereum('topsecret', function (err, result) {
+      if (err) {
+        window.alert(err.reason);
+      }
     });
   }
 
@@ -80,7 +82,9 @@ class Home extends Component {
     const ethId = loGet(window, 'web3.eth.accounts[0]');
     console.log('login', ethId);
     loginWithEthereum(null, function (err, result) {
-      console.log(err, result);
+      if (err) {
+        window.alert(err.reason);
+      }
     });
   }
 }

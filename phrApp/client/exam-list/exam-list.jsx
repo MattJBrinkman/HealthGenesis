@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
+import loGet from 'lodash/get';
 
 import SharesCollection from '../../imports/sharesCollection';
 
@@ -45,11 +46,12 @@ ExamList.propTypes = {
 
 export default createContainer(() => {
   const currentUser = Meteor.user();
-  if (currentUser && currentUser.ethId) {
-    Meteor.subscribe('shares', currentUser.ethId);
+  const ethId = loGet(currentUser, 'services.ethereum.address');
+  if (ethId) {
+    Meteor.subscribe('shares', ethId);
   }
   return {
     shares: SharesCollection.find({}).fetch(),
-    currentUser: Meteor.user()
+    currentUser
   };
 }, ExamList);
