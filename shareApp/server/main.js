@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import resource from './resource';
-import web3 from './web3.js';
+import resource from '../../lib/resource';
+import web3 from '../../lib/web3.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
