@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import SharesCollection from '../../imports/sharesCollection';
@@ -8,10 +9,6 @@ class ExamList extends Component {
     super(props);
 
     this.state = {
-      results: [{
-        senderAddress: '0xDEADBEEF',
-        url: 'http://www.example.com'
-      }]
     };
   }
 
@@ -44,12 +41,15 @@ class ExamList extends Component {
 }
 
 ExamList.propTypes = {
-  ethId: PropTypes.string.isRequired
 };
 
-export default createContainer((props) => {
-  Meteor.subscribe('shares', props.ethId);
+export default createContainer(() => {
+  const currentUser = Meteor.user();
+  if (currentUser && currentUser.ethId) {
+    Meteor.subscribe('shares', currentUser.ethId);
+  }
   return {
-    shares: SharesCollection.find({}).fetch()
+    shares: SharesCollection.find({}).fetch(),
+    currentUser: Meteor.user()
   };
 }, ExamList);

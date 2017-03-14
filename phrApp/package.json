@@ -8,7 +8,7 @@
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
     "ethereumjs-tx": "^1.2.2",
-    "ethereumjs-util": "^5.1.0",
+    "ethereumjs-util": "^5.1.1",
     "keythereum": "^0.3.2",
     "lodash": "^4.17.4",
     "meteor-node-stubs": "~0.2.4",
