@@ -1,7 +1,7 @@
 import Resources from './collections/resources';
-import web3 from '../externals/web3';
+import web3 from './externals/web3';
 import getFutureAddress from './getFutureAddress';
-import resource from '../externals/resource';
+import resource from './externals/resource';
 
 export default function() {
   // TEST CODE - add a smart contract instance if one doesn't already exist
