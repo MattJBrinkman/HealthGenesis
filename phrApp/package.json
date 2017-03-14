@@ -11,7 +11,6 @@
     "ethereumjs-tx": "^1.2.2",
     "ethereumjs-util": "^5.1.0",
     "keythereum": "^0.3.2",
-    "solc": "^0.4.8",
     "web3": "^0.18.2"
 
   }
