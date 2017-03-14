@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import dicomTags from '../qido/dicomTags';
 
 export default class ExamQuery extends Component {
   constructor(props) {
@@ -7,12 +8,13 @@ export default class ExamQuery extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      patientName: ''
+      patientName: '',
+      mrn: ''
     };
   }
 
   render() {
-    const { patientName } = this.state;
+    const { patientName, mrn } = this.state;
     return <div className="exam-query">
       <form onSubmit={this.onSubmit} className="form-inline">
         <div className="form-group">
@@ -24,6 +26,14 @@ export default class ExamQuery extends Component {
                  placeholder="Patient Name" />
         </div>
         <div className="form-group">
+          <label className="sr-only">MRN</label>
+          <input type="text"
+                 className="form-control"
+                 value={mrn}
+                 onChange={e => this.setState({ mrn: e.target.value })}
+                 placeholder="MRN" />
+        </div>
+        <div className="form-group">
           <button type="submit" className="btn btn-primary">Search</button>
         </div>
       </form>
@@ -33,6 +43,21 @@ export default class ExamQuery extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    const { patientName, mrn } = this.state;
+
+    this.props.onSearch({
+      [dicomTags.byName.PatientName]: patientName,
+      [dicomTags.byName.PatientID]: mrn
+    });
+
     return false;
   }
 }
+
+ExamQuery.propTypes = {
+  onSearch: PropTypes.func
+};
+
+ExamQuery.defaultProps = {
+  onSearch: () => {}
+};
