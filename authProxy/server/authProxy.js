@@ -57,6 +57,7 @@ function handleOptionsRequest(req, res) {
     res.setHeader('Access-Control-Allow-Headers', allowedHeaders);
   }
   res.setHeader('Access-Control-Max-Age', '86400');
+  res.end();
 }
 
 // See https://github.com/chafey/ethereum-signed-http/blob/master/app/server/httpHandler.js
@@ -159,6 +160,5 @@ function checkUrl(req, instance) {
 }
 
 function checkBlockChain(req) {
-  const xval = req.headers['x-special-proxy-header'];
-  return (xval && xval === 'true');
+  return true;
 }
