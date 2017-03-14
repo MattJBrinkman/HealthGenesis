@@ -37,6 +37,7 @@ http.createServer((req, res) => {
     console.log('Proxying', req.url);
     proxy.web(req, res, opts);
   } else {
+    console.log('refusing to proxy', req.url);
     res.statusCode = 403;
     res.end();
   }
@@ -53,6 +54,7 @@ function isQidoRequest(req) {
 function handleOptionsRequest(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT');
   const allowedHeaders = req['access-control-allow-headers'];
+
   if (allowedHeaders) {
     res.setHeader('Access-Control-Allow-Headers', allowedHeaders);
   }
