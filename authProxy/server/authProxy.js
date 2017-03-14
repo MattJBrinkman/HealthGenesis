@@ -2,9 +2,9 @@ import eutil from 'ethereumjs-util';
 import http from 'http';
 import httpProxy from 'http-proxy';
 import HttpError from './HttpError';
-import resource from './externals/resource';
+import resource from '../imports/resource';
 import url from 'url';
-import web3 from './externals/web3';
+import web3 from '../imports/web3';
 
 const validOwners = (() => {
   if (process.env.ETH_ACCOUNTS) {
