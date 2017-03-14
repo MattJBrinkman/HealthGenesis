@@ -15,11 +15,12 @@ const server = http.createServer((req, res) => {
     return handleOptionsRequest(req, res);
   }
   res.setHeader('Access-Control-Allow-Origin', '*');
-  const continueOn = checkBlockChain(req);
+  const continueOn = true; //checkBlockChain(req);
   if (continueOn) {
     console.log('Proxying', req.url);
     proxy.web(req, res, opts);
   } else {
+    console.log('Failed to proxy', req.url);
     res.statusCode = 403;
     res.end();
   }
@@ -30,10 +31,12 @@ const server = http.createServer((req, res) => {
 function handleOptionsRequest(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT');
   const allowedHeaders = req['access-control-allow-headers'];
+
   if (allowedHeaders) {
     res.setHeader('Access-Control-Allow-Headers', allowedHeaders);
   }
   res.setHeader('Access-Control-Max-Age', '86400');
+  res.end();
 }
 
 function checkBlockChain(req) {

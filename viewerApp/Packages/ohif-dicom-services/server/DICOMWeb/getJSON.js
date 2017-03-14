@@ -7,7 +7,8 @@ function makeRequest(geturl, options, callback) {
         hostname: parsed.hostname,
         port: parsed.port,
         headers: {
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'x-special-proxy-header': true
         },
         path: parsed.path,
         method: 'GET'

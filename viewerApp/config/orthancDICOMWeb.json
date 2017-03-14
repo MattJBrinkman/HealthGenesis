@@ -11,7 +11,7 @@
         "requestOptions": {
           "auth": "orthanc:orthanc",
           "logRequests": true,
-          "logResponses": true,
+          "logResponses": false,
           "logTiming": true
         }
       }
