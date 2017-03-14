@@ -44,11 +44,11 @@ class ExamList extends Component {
 }
 
 ExamList.propTypes = {
+  ethId: PropTypes.string.isRequired
 };
 
-export default createContainer(() => {
-  // TODO: Get eth identity
-  Meteor.subscribe('shares', '0xDEADBEEF');
+export default createContainer((props) => {
+  Meteor.subscribe('shares', props.ethId);
   return {
     shares: SharesCollection.find({}).fetch()
   };
