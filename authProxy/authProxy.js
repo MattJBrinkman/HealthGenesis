@@ -6,6 +6,8 @@ const opts = { target: 'http://localhost:8042'};
 
 const proxy = httpProxy.createProxyServer({});
 
+console.log('Running proxy...');
+
 const server = http.createServer((req, res) => {
   const continueOn = checkBlockChain(req);
   if (continueOn) {
