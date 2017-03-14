@@ -1,5 +1,7 @@
-const http = require('http');
-const httpProxy = require('http-proxy');
+import http from 'http';
+import httpProxy from 'http-proxy';
+import resource from './externals/resource';
+import web3 from './externals/web3';
 
 // Proxy server which checks the block chain permission and then proxies the request
 const opts = { target: 'http://localhost:8042'};

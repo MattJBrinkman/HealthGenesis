@@ -1,4 +1,4 @@
-import web3 from '../externals/web3';
+import web3 from './externals/web3';
 import eutil from 'ethereumjs-util';
 
 export default function(senderAddress) {
