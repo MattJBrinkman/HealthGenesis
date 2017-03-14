@@ -1,6 +1,6 @@
-import web3 from './externals/web3.js'
+import web3 from '../imports/web3.js'
 import getFutureAddress from './getFutureAddress.js';
-import resource from './externals/resource';
+import resource from '../imports/resource';
 
 Meteor.methods({
   'create' : (recipient, url, resourceId, resourceType) => {
