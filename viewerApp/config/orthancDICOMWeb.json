@@ -3,15 +3,15 @@
     "dicomWeb": [
       {
         "name": "Orthanc",
-        "wadoUriRoot": "http://localhost:8042/wado",
-        "qidoRoot": "http://localhost:8042/dicom-web",
-        "wadoRoot": "http://localhost:8042/dicom-web",
+        "wadoUriRoot": "http://localhost:9042/wado",
+        "qidoRoot": "http://localhost:9042/dicom-web",
+        "wadoRoot": "http://localhost:9042/dicom-web",
         "qidoSupportsIncludeField": false,
         "imageRendering": "wadouri",
         "requestOptions": {
           "auth": "orthanc:orthanc",
           "logRequests": true,
-          "logResponses": false,
+          "logResponses": true,
           "logTiming": true
         }
       }
@@ -28,5 +28,8 @@
         "displaySetNavigationMultipleViewports": true,
         "autoPositionMeasurementsTextCallOuts": "TRLB"
     }
-  }
+  },
+ "proxy": {
+   "enabled":false
+ }
 }
