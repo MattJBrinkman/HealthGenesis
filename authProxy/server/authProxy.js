@@ -4,11 +4,11 @@ import resource from './externals/resource';
 import web3 from './externals/web3';
 
 // Proxy server which checks the block chain permission and then proxies the request
-const opts = { target: 'http://localhost:8042'};
+const opts = { target: process.env.PROXIED_SERVER };
 
 const proxy = httpProxy.createProxyServer({});
 
-console.log('Running proxy...');
+console.log('Running proxy in front of ' + opts.target + '...');
 
 const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
