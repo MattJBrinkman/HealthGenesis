@@ -3,6 +3,8 @@ import shareEventListener from './shareEventListener';
 
 import '../imports/sharesCollection';
 
+import '../imports/sharesCollection';
+
 Meteor.startup(() => {
   // code to run on server at startup
 
