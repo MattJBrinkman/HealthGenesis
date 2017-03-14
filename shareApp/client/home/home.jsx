@@ -9,8 +9,8 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      // qidoUrl: 'https://dicomcloud.azurewebsites.net/qidors/studies'
-      qidoUrl: 'http://pacsemulator.cloudapp.net:8042/dicom-web/studies'
+      qidoUrl: 'https://dicomcloud.azurewebsites.net/qidors/studies'
+      // qidoUrl: 'http://pacsemulator.cloudapp.net:8042/dicom-web/studies'
     };
   }
 
