@@ -17,7 +17,7 @@ export default function() {
         address: futureAddress
       });
     }, (error) => {
-      console.log("WARNING - failed to create smart contract instance!");
+      console.log("WARNING - failed to create smart contract instance!", error);
     });
     return futureAddress;
   } else {

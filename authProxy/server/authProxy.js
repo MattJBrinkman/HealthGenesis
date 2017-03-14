@@ -34,6 +34,7 @@ http.createServer((req, res) => {
   // HACKHACKHACK - this is just an example - we're not doing any authorization on QIDO requests.
   const continueOn = isQidoRequest(req) || checkBlockChain(req);
   if (continueOn) {
+    console.log('Proxying', req.url);
     proxy.web(req, res, opts);
   } else {
     res.statusCode = 403;

@@ -5,8 +5,6 @@ import getOrCreateTestInstanceAddress from './getOrCreateTestInstanceAddress';
 
 Meteor.startup(() => {
   // code to run on server at startup
-
-
   var address = getOrCreateTestInstanceAddress();
   console.log('using test instance @ ', address);
   try {
@@ -16,6 +14,5 @@ Meteor.startup(() => {
     console.log('recipient:', instance.recipient());
   } catch(err) {
     console.log("ERROR accessing smart contract instance", err);
-
   }
 });

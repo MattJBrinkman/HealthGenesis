@@ -1,5 +1,5 @@
 ```
-PROXIED_SERVER=http://pacsemulator.cloudapp.net:8042/dicom-web/studies meteor --port 4444
+PROXIED_SERVER=http://pacsemulator.cloudapp.net:8042 meteor --port 4444
 ```
 
 Additional options set via environment variables:
