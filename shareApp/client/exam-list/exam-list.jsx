@@ -97,7 +97,7 @@ export default class ExamList extends Component {
     var wadoRsUri = this.props.qidoUrl + '/' + studyUid;
     createResource(wadoRsUri, recipientAddress, resourceId, 'wadors').then(() => {
       // create the wado-uri uri
-      var wadoUriUrl = wadoRsUri.replace('dicom-web', 'wado');
+      var wadoUriUrl = this.props.qidoUrl.replace('dicom-web/studies', 'wado?requestType=WADO&studyUID=' + studyUid);
       createResource(wadoUriUrl, recipientAddress, resourceId, 'wadouri').then(() => {
         this.closeModal();
       });
