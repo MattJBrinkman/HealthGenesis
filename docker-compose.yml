@@ -1,6 +1,7 @@
 version: '2'
 volumes:
   dbvolume:
+  mongovolume:
 services:
   bootstrap:
     build: monitored-geth-client
@@ -49,13 +50,17 @@ services:
     container_name: orthanc
     volumes:
       - dbvolume:/var/lib/orthanc/db
+      - ./orthanc:/etc/orthanc:ro
     command: /etc/orthanc/
     entrypoint: Orthanc
     ports:
       - "4242:4242"
+      - "8042:8042"
   mongodb:
     image: mongo:3.2
-    command: mongod --smallfiles --quiet --logpath=/dev/null
+    volumes:
+      - mongovolume:/data/db
+    command: --smallfiles
   auth-proxy:
     image: ulexus/meteor
     ports:
@@ -67,10 +72,10 @@ services:
     environment:
       PORT: "3001"
       ROOT_URL: "http://localhost:3001"
-      MONGO_URL: = "mongodb://database:27017/meteor"
+      MONGO_URL: "mongodb://:mongodb:27017/meteor"
       PROXIED_SERVER: "http://orthanc:8042"
   phr-app:
-    image: meteor-dock
+    image: docker-meteor
     ports:
       - "3002:3002"
     links:
@@ -80,16 +85,18 @@ services:
     environment:
       PORT: "3002"
       ROOT_URL: "http://localhost:3002"
-      MONGO_URL: = "mongodb://database:27017/meteor"
+      MONGO_URL: "mongodb://mongodb:27017/meteor"
   share-app:
-    image: meteor-dock
+    image: docker-meteor
     ports:
       - "3003:3003"
     links:
       - mongodb
+      - bootstrap
     volumes:
-      - /tmp/phrApp/build:/home/meteor/www
+      - /tmp/shareApp/build:/home/meteor/www
     environment:
       PORT: "3003"
       ROOT_URL: "http://localhost:3003"
-      MONGO_URL: = "mongodb://database:27017/meteor"
+      MONGO_URL: "mongodb://mongodb:27017/meteor"
+      ETH_INSTANCE_URL: "http://bootstrap:8545"
