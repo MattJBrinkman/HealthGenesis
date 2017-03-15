@@ -16,7 +16,7 @@ export default () => {
       topics: [
         resourceCreatedTopic
       ],
-      fromBlock: 0//blockHarvestStatus.lastBlock + 1
+      fromBlock: blockHarvestStatus.lastBlock + 1
     });
 
   // go and get all the events
