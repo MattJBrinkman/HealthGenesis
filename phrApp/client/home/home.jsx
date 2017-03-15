@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import loGet from 'lodash/get';
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'meteor/react-meteor-data';
 
 import loginWithEthereum from '../accounts-ethereum/loginWithEthereum.js';
 
@@ -22,7 +21,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.timerId = setInterval(() => {
-      const { currentUser } = this.props;
+      const { currentUser } = this.context;
       const currentEthId = loGet(currentUser, 'services.ethereum.address');
       const newEthId = loGet(window, 'web3.eth.accounts[0]');
       if (currentEthId && newEthId !== currentEthId) {
@@ -40,7 +39,7 @@ class Home extends Component {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser } = this.context;
     const ethId = loGet(currentUser, 'services.ethereum.address');
     const isLoggedIn = !!ethId;
     const hasMetaMask = typeof window.mist === 'undefined' && window.web3;
@@ -53,7 +52,6 @@ class Home extends Component {
 
     return <div className="home container">
       <h1>Worklist</h1>
-      {isLoggedIn && <p>Hello, {ethId} <button className="btn btn-primary pull-right" onClick={() => Meteor.logout()}>Log Out</button></p>}
       {isLoggedIn
         ? <ExamList />
         : <div>
@@ -89,9 +87,8 @@ class Home extends Component {
   }
 }
 
-export default createContainer(() => {
-  Meteor.subscribe('userData');
-  return {
-    currentUser: Meteor.user()
-  };
-}, Home);
+Home.contextTypes = {
+  currentUser: PropTypes.object
+};
+
+export default Home;
