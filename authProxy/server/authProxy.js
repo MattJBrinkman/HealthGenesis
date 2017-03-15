@@ -88,10 +88,10 @@ function checkTimeStamp(req) {
   const requestTimestamp = getRequestTimestamp(req);
   const now = Date.now();
   const delta = Math.abs(now - requestTimestamp);
-  const timeLimitS = 30;
-  if (delta > (timeLimitS * 1000)) {
-    throw new HttpError(403, 'Detected a time skew of more than ' + timeLimitS +
-      's. Rejecting request');
+  const timeLimitM = 5;
+  if (delta > (60 * timeLimitM * 1000)) {
+    throw new HttpError(403, 'Detected a time skew of more than ' + timeLimitM +
+      'm. Rejecting request');
   }
 }
 
@@ -154,7 +154,7 @@ function checkRecipient(req, instance) {
 }
 
 function checkUrl(req, instance) {
-  const requestUrl = req.url;
+  const requestUrl = url.parse(req.url).pathname;
   const instanceUrl = url.parse(instance.url()).pathname;
 
   if (!requestUrl.startsWith(instanceUrl)) {
@@ -173,7 +173,7 @@ function checkUrl(req, instance) {
   //  Request URL: /aaa/bbbb       Contract URL: /aaa/bbb
   //
   if ((requestUrl.length > instanceUrl.length) &&
-      (requestUrl.length[instanceUrl.length] !== '/')) {
+      (requestUrl[instanceUrl.length] !== '/')) {
     throw new HttpError(403, 'client attempted an invalid access to "' + requestUrl + '" (2)');
   }
   // All good
