@@ -16,6 +16,5 @@ done
 pushd viewerApp/OHIFViewer
 echo "Building viewer"
 npm install
-METEOR_PACKAGE_DIRS="../Packages"
-meteor build --directory /tmp/viewerApp/build
-popd 
+METEOR_PACKAGE_DIRS="../Packages" meteor build --directory /tmp/viewerApp/build
+popd
