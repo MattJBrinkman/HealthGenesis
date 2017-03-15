@@ -1,0 +1,8 @@
+version: '2'
+services:
+  client-go:
+    build: baseImages/client-go
+    image: client-go:v1.5.8
+  docker-meteor:
+    build: baseImages/docker-meteor
+    image: docker-meteor

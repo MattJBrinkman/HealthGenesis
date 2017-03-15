@@ -3,12 +3,6 @@ volumes:
   dbvolume:
   mongovolume:
 services:
-  client-go:
-    build: baseImages/client-go
-    image: client-go:v1.5.8
-  docker-meteor:
-    build: baseImages/docker-meteor
-    image: docker-meteor
   bootstrap:
     build: monitored-geth-client
     restart: on-failure
@@ -64,50 +58,57 @@ services:
       - "8042:8042"
   mongodb:
     image: mongo:3.2
+    restart: on-failure
     volumes:
       - mongovolume:/data/db
     command: --smallfiles
   auth-proxy:
     image: docker-meteor
+    restart: on-failure
     ports:
       - "9042:9042"
     links:
       - mongodb
     volumes:
-      - /tmp/export-meteor/build:/home/meteor/www
+      - /tmp/authProxy/build:/home/meteor/www
     environment:
-      PORT: "3001"
-      ROOT_URL: "http://localhost:3001"
+      PORT: "3010"
+      ROOT_URL: "http://localhost:3010"
       MONGO_URL: "mongodb://:mongodb:27017/meteor"
       PROXIED_SERVER: "http://orthanc:8042"
+      ETH_INSTANCE_URL: "http://bootstrap:8545"
   phr-app:
     image: docker-meteor
+    restart: on-failure
     ports:
-      - "3002:3002"
+      - "3020:3020"
     links:
       - mongodb
     volumes:
       - /tmp/phrApp/build:/home/meteor/www
     environment:
-      PORT: "3002"
-      ROOT_URL: "http://localhost:3002"
+      PORT: "3020"
+      ROOT_URL: "http://localhost:3020"
       MONGO_URL: "mongodb://mongodb:27017/meteor"
+      ETH_INSTANCE_URL: "http://bootstrap:8545"
   share-app:
     image: docker-meteor
+    restart: on-failure
     ports:
-      - "3003:3003"
+      - "3030:3030"
     links:
       - mongodb
       - bootstrap
     volumes:
       - /tmp/shareApp/build:/home/meteor/www
     environment:
-      PORT: "3003"
-      ROOT_URL: "http://localhost:3003"
+      PORT: "3030"
+      ROOT_URL: "http://localhost:3030"
       MONGO_URL: "mongodb://mongodb:27017/meteor"
       ETH_INSTANCE_URL: "http://bootstrap:8545"
   viewer-app:
     image: docker-meteor
+    restart: on-failure
     ports:
       - "3004:3004"
     links:
@@ -121,3 +122,4 @@ services:
       ROOT_URL: "http://localhost:3004"
       MONGO_URL: "mongodb://mongodb:27017/meteor"
       SETTINGS_FILE: "/home/meteor/config/orthancDICOMWebDocker.json"
+      ETH_INSTANCE_URL: "http://bootstrap:8545"
