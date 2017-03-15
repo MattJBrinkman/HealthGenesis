@@ -5,7 +5,7 @@ Meteor.methods({
      * Retrieves Study metadata given a Study Instance UID
      * This Meteor method is available from both the client and the server
      */
-    GetStudyMetadata: function(studyInstanceUid) {
+    GetStudyMetadata: function(studyInstanceUid, ethereumContext) {
         OHIF.log.info('GetStudyMetadata(%s)', studyInstanceUid);
 
         // Get the server data. This is user-defined in the config.json files or through servers
@@ -17,7 +17,7 @@ Meteor.methods({
         }
 
         if (server.type === 'dicomWeb') {
-            return Services.WADO.RetrieveMetadata(server, studyInstanceUid);
+            return Services.WADO.RetrieveMetadata(server, studyInstanceUid, ethereumContext);
         } else if (server.type === 'dimse') {
             return Services.DIMSE.RetrieveMetadata(studyInstanceUid);
         }

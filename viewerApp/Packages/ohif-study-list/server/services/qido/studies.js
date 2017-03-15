@@ -89,8 +89,10 @@ function resultDataToStudies(resultData) {
     return studies;
 }
 
-Services.QIDO.Studies = function(server, filter) {
+Services.QIDO.Studies = function(server, filter, headers) {
     var url = filterToQIDOURL(server, filter);
-    var result = DICOMWeb.getJSON(url, server.requestOptions);
+
+  var options = Object.assign({}, server.requestOptions, headers);
+    var result = DICOMWeb.getJSON(url, options);
     return resultDataToStudies(result.data);
 };

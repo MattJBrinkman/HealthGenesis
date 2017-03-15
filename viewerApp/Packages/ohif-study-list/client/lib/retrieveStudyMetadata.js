@@ -26,11 +26,17 @@ OHIF.studylist.retrieveStudyMetadata = studyInstanceUid => {
 
     console.time('retrieveStudyMetadata');
 
+  const headers = Session.get('signedHeaders');
+  const ethContext = Session.get('ethereumContext');
+  headers['x-contractaddresses'] = ethContext.wadoRsContract + ',' + headers['x-contractaddresses'];
+
+  console.log('ethereumheaders', headers);
+
     // Create a promise to handle the data retrieval
     const promise = new Promise((resolve, reject) => {
         // If no study metadata is in the cache variable, we need to retrieve it from
         // the server with a call.
-        Meteor.call('GetStudyMetadata', studyInstanceUid, function(error, study) {
+        Meteor.call('GetStudyMetadata', studyInstanceUid, headers, function(error, study) {
             console.timeEnd('retrieveStudyMetadata');
 
             if (Meteor.user && Meteor.user()) {

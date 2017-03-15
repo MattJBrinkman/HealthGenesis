@@ -7,8 +7,7 @@ function makeRequest(geturl, options, callback) {
         hostname: parsed.hostname,
         port: parsed.port,
         headers: {
-            Accept: 'application/json',
-            'x-special-proxy-header': true
+            Accept: 'application/json'
         },
         path: parsed.path,
         method: 'GET'
@@ -17,7 +16,13 @@ function makeRequest(geturl, options, callback) {
         requestOpt.auth = options.auth;
     }
 
-    var req = http.request(requestOpt, function(resp) {
+  var headers = Object.assign({}, options);
+  Object.keys(headers)
+    .filter(key => !/^x-/.test(key))
+    .forEach(key => delete headers[key]);
+  requestOpt.headers = Object.assign(requestOpt.headers, headers);
+
+  var req = http.request(requestOpt, function(resp) {
         const contentType = (resp.headers['content-type'] || '').split(';')[0];
 
         if (jsonHeaders.indexOf(contentType) == -1) {

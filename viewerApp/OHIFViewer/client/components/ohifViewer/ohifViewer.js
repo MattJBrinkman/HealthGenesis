@@ -13,7 +13,7 @@ cornerstoneWADOImageLoader.configure({
     beforeSend: function(xhr) {
         // Add custom headers here (e.g. auth tokens)
         var ctx = Session.get('ethereumContext');
-        var clonedHeaders = {...signedHeaders};
+        var clonedHeaders = Object.assign({}, signedHeaders);
         clonedHeaders["x-contractaddresses"] = ctx.wadoContract + ',' + clonedHeaders["x-contractaddresses"];
         Object.keys(clonedHeaders).forEach((it) => {
             xhr.setRequestHeader(it, clonedHeaders[it]);

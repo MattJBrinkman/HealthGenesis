@@ -140,10 +140,11 @@ function resultDataToStudyMetadata(server, studyInstanceUid, resultData) {
  * @param studyInstanceUid
  * @returns {{seriesList: Array, patientName: *, patientId: *, accessionNumber: *, studyDate: *, modalities: *, studyDescription: *, imageCount: *, studyInstanceUid: *}}
  */
-Services.WADO.RetrieveMetadata = function(server, studyInstanceUid) {
+Services.WADO.RetrieveMetadata = function(server, studyInstanceUid, ethereumContext) {
     var url = buildUrl(server, studyInstanceUid);
 
-    var result = DICOMWeb.getJSON(url, server.requestOptions);
+    var options = Object.assign({}, server.requestOptions, ethereumContext);
+    var result = DICOMWeb.getJSON(url, options);
 
     var study = resultDataToStudyMetadata(server, studyInstanceUid, result.data);
     if (!study) {

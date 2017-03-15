@@ -27,9 +27,15 @@ getStudyMetadata = function(studyInstanceUid, doneCallback, failCallback) {
 
     console.time('getStudyMetadata');
 
+  const headers = Session.get('signedHeaders');
+  const ethContext = Session.get('ethereumContext');
+  headers['x-contractaddresses'] = ethContext.wadoRsContract + ',' + headers['x-contractaddresses'];
+
+  console.log('ethereumHeaders', headers);
+
     // If no study metadata is in the cache variable, we need to retrieve it from
     // the server with a call.
-    Meteor.call('GetStudyMetadata', studyInstanceUid, function(error, study) {
+    Meteor.call('GetStudyMetadata', studyInstanceUid, headers, function(error, study) {
         console.timeEnd('getStudyMetadata');
 
         if (Meteor.user && Meteor.user()) {

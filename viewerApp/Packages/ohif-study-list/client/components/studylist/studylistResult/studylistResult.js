@@ -148,7 +148,13 @@ function search() {
     // Clear all current studies
     StudyListStudies.remove({});
 
-    Meteor.call('StudyListSearch', filter, (error, studies) => {
+  const headers = Session.get('signedHeaders');
+  const ethContext = Session.get('ethereumContext');
+  headers['x-contractaddresses'] = ethContext.wadoRsContract + ',' + headers['x-contractaddresses'];
+
+  console.log('ethereumheaders', headers);
+
+    Meteor.call('StudyListSearch', filter, headers, (error, studies) => {
         console.log('StudyListSearch');
         if (error) {
             OHIF.log.warn(error);

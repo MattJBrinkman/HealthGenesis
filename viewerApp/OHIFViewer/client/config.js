@@ -19,9 +19,4 @@ Meteor.startup(function () {
   };
 
   cornerstoneWADOImageLoader.webWorkerManager.initialize(config);
-  cornerstoneWADOImageLoader.configure({
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('x-special-proxy-header', 'true');
-    }
-  });
 });
