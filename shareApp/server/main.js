@@ -3,6 +3,8 @@ import resource from '../imports/resource';
 import web3 from '../imports/web3';
 import getOrCreateTestInstanceAddress from './getOrCreateTestInstanceAddress';
 
+import '../imports/accounts-ethereum/server/register';
+
 Meteor.startup(() => {
   // code to run on server at startup
   var address = getOrCreateTestInstanceAddress();

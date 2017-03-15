@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import shareEventWatcher from './shareEventWatcher';
 
+import '../imports/externals/accounts-ethereum/server/register';
 import '../imports/sharesCollection';
 
 Meteor.startup(() => {
