@@ -106,7 +106,7 @@ function getSigFromHeaders(req) {
 function getContractAddresses(req) {
   const list = req.headers['x-contractaddresses'].split(',');
   for (let i = 0; i < list.length; i++) {
-    list[i] = trim(list[i]);
+    list[i] = list[i].trim();
   }
   return list;
 }
