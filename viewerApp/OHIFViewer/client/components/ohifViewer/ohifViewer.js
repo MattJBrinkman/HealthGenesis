@@ -76,6 +76,7 @@ function signRequest() {
 // use this to repopulate the variable
 Template.ohifViewer.onCreated(() => {
     ViewerData = Session.get('ViewerData') || {};
+    signRequest();
 });
 
 Template.ohifViewer.events({
@@ -87,9 +88,6 @@ Template.ohifViewer.events({
         } else {
             switchToTab(lastContentId);
         }
-    },
-    'click #sign'() {
-      signRequest();
     }
 });
 
