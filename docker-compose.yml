@@ -3,6 +3,12 @@ volumes:
   dbvolume:
   mongovolume:
 services:
+  client-go:
+    build: baseImages/client-go
+    image: client-go:v1.5.8
+  client-go:
+    build: baseImages/docker-meteor
+    image: docker-meteor
   bootstrap:
     build: monitored-geth-client
     restart: on-failure
