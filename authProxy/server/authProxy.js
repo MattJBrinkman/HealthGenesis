@@ -18,8 +18,6 @@ const validOwners = (() => {
   return [web3.eth.accounts[0]];
 })();
 
-console.log('------------------> VALID OWNERS', validOwners);
-
 // Proxy server which checks the block chain permission and then proxies the request
 const opts = { target: process.env.PROXIED_SERVER };
 
@@ -107,19 +105,31 @@ function getSigFromHeaders(req) {
   };
 }
 
+function getContractAddresses(req) {
+  const list = req.headers['x-contract-addresses'].split(',');
+  for (let i = 0; i < list.length; i++) {
+    list[i] = trim(list[i]);
+  }
+  return list;
+}
+
 function getContractAddress(req) {
-  return req.headers['x-contractaddress'];
+  const list = getContractAddresses(req);
+  if (list.length < 1) {
+    throw new HttpError(400, 'bad x-contract-addresses header value: "' + list.join(',') + '"');
+  }
+  return list[0];
 }
 
 function getMessageHash(req) {
-  const contractAddress = getContractAddress(req);
+  const contractAddressesForSigning = getContractAddresses(req).slice(1);
   const requestTimestamp = getRequestTimestamp(req, false/* leave as string */);
-  const message = contractAddress + requestTimestamp;
+  const message = contractAddressesForSigning.join('') + requestTimestamp;
   const hash = web3.sha3(message);
   return eutil.toBuffer(hash);
 }
 
-function getSignerAddress(req, contractAddress) {
+function getSignerAddress(req) {
   const sig = getSigFromHeaders(req);
   const msgHash = getMessageHash(req);
   const publicKey = eutil.ecrecover(msgHash, sig.v, sig.r, sig.s);
