@@ -16,7 +16,7 @@ export default () => {
       topics: [
         resourceCreatedTopic
       ],
-      fromBlock: blockHarvestStatus.lastBlock + 1
+      fromBlock: 0//blockHarvestStatus.lastBlock + 1
     });
 
   // go and get all the events
@@ -35,14 +35,20 @@ export default () => {
     console.log('url', url);
     console.log('recipient', recipient);
     console.log('resourceId', resourceId);
-    console.log('resourceType', resourceType);
+    console.log('resourceType-' + resourceType + '-');
     var blockNumber = log.blockNumber;
     var block = web3.eth.getBlock(log.blockNumber);
     //console.log(block);
     var timeStamp = new Date(block.timestamp * 1000);
 
-    var wadoUriBaseUrl = resourceType == 'wadouri' ? url : '';
-    var dicomWebBaseUrl = resourceType == 'wadors' ? url : '';
+    var wadoUriBaseUrl = (resourceType == 'wadouri') ? url : '';
+    var dicomWebBaseUrl = (resourceType == 'wadors') ? url : '';
+
+    var wadoUriAddress = (resourceType === 'wadouri') ? instance.address : '';
+    var dicomWebAddress = (resourceType === 'wadors') ? instance.address : '';
+    console.log('instance.address', instance.address);
+    console.log('* wadoUriAddress', wadoUriAddress);
+    console.log('* dicomWebAddress', dicomWebAddress);
 
     // skip wadouri for now because we have problems with dup keys
     var share = SharesCollection.findOne({resourceId: resourceId});
@@ -54,7 +60,9 @@ export default () => {
         recipientAddress : recipient,
         resourceId: resourceId,
         wadoUriBaseUrl: wadoUriBaseUrl,
+        wadoUriAddress: wadoUriAddress,
         dicomWebBaseUrl: dicomWebBaseUrl,
+        dicomWebAddress: dicomWebAddress,
         blockNumber: blockNumber,
         timeStamp : timeStamp
       }, function(err, result) {
@@ -62,22 +70,26 @@ export default () => {
         var update = {};
         if(resourceType === 'wadouri') {
           update.wadoUriBaseUrl = wadoUriBaseUrl;
+          update.wadoUriAddress = wadoUriAddress;
         } else if(resourceType === 'wadors') {
           update.dicomWebBaseUrl = dicomWebBaseUrl;
+          update.dicomWebAddress = dicomWebAddress;
         }
         console.log('updating...', update);
-        SharesCollection.update({resourceId: resourceId._id}, {$set: update});
+        SharesCollection.update({resourceId: resourceId}, {$set: update});
       });
   } else {
     console.log('existing share, updating...');
     var update = {};
     if(resourceType === 'wadouri') {
       update.wadoUriBaseUrl = wadoUriBaseUrl;
+      update.wadoUriAddress = wadoUriAddress;
     } else if(resourceType === 'wadors') {
       update.dicomWebBaseUrl = dicomWebBaseUrl;
+      update.dicomWebAddress = dicomWebAddress;
     }
     console.log('updating...', update);
-    SharesCollection.update({_id: share._id}, {$set: update});
+    SharesCollection.update({resourceId: resourceId}, {$set: update});
   }
 
   BlockHarvestStatus.update(blockHarvestStatus._id, {$set: {lastBlock: log.blockNumber}});
