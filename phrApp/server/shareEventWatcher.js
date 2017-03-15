@@ -1,6 +1,6 @@
-import web3 from './externals/web3';
+import web3 from '../imports/externals/web3';
 import addResourceShare from './addResourceShare';
-import resource from './externals/resource';
+import resource from '../imports/externals/resource';
 import BlockHarvestStatus from '../imports/blockHarvestStatus';
 import SharesCollection from '../imports/sharesCollection';
 
