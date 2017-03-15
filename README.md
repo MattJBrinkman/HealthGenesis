@@ -56,34 +56,83 @@ authProxy - A meteor based application that acts as a HTTP proxy to a DICOMWeb
             digital signatures and resource authroziation grants stored
             in the ethereum blockchain.
 
+
+Demonstration Deployment using Docker
+-------------------------------------
+A demo version of Health Genesis can be instantiated as a set of Docker containers.
+This system will be composed of one or more ethereum geth nodes, the eth-netstats
+dashboard, the Orthanc image archive, a mongo database instance and the four
+Health Genesis applications.
+
+This section will describe the process for creating the Health Genesis demo system
+form the supplied source.
+
+System Prerequisites:
+
+1. bash: Installation automation is provided as a set of bash scripts.
+
+2. Meteor.js: The Health Genesis applications are built on the Meteor.js
+   framework. Meteor is installed to provide for the application bundling process.
+
+3. Node.js: Meteor.js and the Health Genesis applications require Node.js
+
+4. Docker: Docker is used as a local deployment and orchestration system.
+
+
+Steps to Deploy the System:
+
+1. Bundle the Health Genesis applications for deployment by running the bash
+   script named "build.sh" that is found in the root of the Health Genesis
+   source directory.
+
+2. Create the base ethereum and meteor images by running the command
+
+       docker-compose -f base.yml build
+
+  in the root of the Health Genesis source directory.
+
+3. Deploy the Health Genesis system by running the command
+
+        docker-compose up -d
+
+   in the root of the Health Genesis source directory.
+
+4. Complete the installation by running the script named "finalize.sh"  This
+   script will start the ethereum block chain mining and install sample image
+   data from the The Cancer Imaging Archive (funded by NIH).
+
+5. Add an entry to your hosts file to point auth-proxy to localhost.
+
+
+
 Running
 -------
 
-Load DICOM files obtained from the The Cancer Imaging Archive (funded by NIH)
+Make sure you have the Metamask extension installed (https://metamask.io/) in
+chrome and create two accounts (account A and account B). The keystore files for
+ten unique accounts are available in ./files/keystore and can be imported into
+metamask.
 
-> dicomData/pushdata.sh
-
-Make sure you have the metamask extension installed in chrome and create
-two accounts (account A and account B).
-
-1) Open the shareApp web app: http://localhost:3000
+1) Open the shareApp web app: http://localhost:3030
 
 2) Click "Register".  Enter the code "topsecret" and press submit.  Confirm the transaction
 
 3) Press "Search". You should see a single DICOM Study appear
 
-4) Click "Share".  Enter the addres for ethereum account B, press submit
+4) Click "Share".  Enter the address for ethereum account B, press submit
 
-5) Open another tab to the phrApp: http://localhost:3100
+5) Open another tab to the phrApp: http://localhost:3020
 
 6) Select metamask account b, press Register.  Confirm the transaction
 
 7) You should see an entry in the table representing the share made in step 4
 
 8) Click "View Images".  The Image Viewer should appear with a button in upper
-   left corner labled "Sign".  Presss sign and confirm the transaction
+   left corner labled "Sign".  Press sign and confirm the transaction
 
 You should now see images!
+
+
 
 Developer Setup
 ---------------
@@ -117,50 +166,3 @@ console 3:
 > PROXIED_SERVER=http://pacsemulator.cloudapp.net:8042 meteor --port 3001
 
 Note that port 4444 is ignored here. The actual port to use to connect to Orthanc is 9042.
-
-
-Docker Deployment
------------------
-A demo version of Health Genesis can be instantiated as a set of Docker containers.
-This system will be composed of one or more ethereum geth nodes, the eth-netstats
-dashboard, the Orthanc image archive, a mongo database instance and the four
-Health Genesis applications.
-
-This section will describe the process for creating the Health Genesis demo system
-form the supplied source.
-
-System Prerequisites:
-
-1. bash: Installation automation is provided as a set of bash scripts.
-
-2. Meteor.js: The Health Genesis applications are built on the Meteor.js
-   framework. Meteor is installed to provide for the application bundling process.
-
-3. Node.js: Meteor.js and the Health Genesis applications require Node.js
-
-4. Docker: Docker is used as a local deployment and orchestration system.
-
-
-Steps to Deploy the System:
-
-1. Bundle the Health Genesis applications for deployment by running the bash
-   script named "build.sh" that is found in the root of the Health Genesis
-   source directory.
-
-2. Create the base ethereum and meteor images by running the command
-
-       docker-compose build -f base.yml
-
-  in the root of the Health Genesis source directory.
-
-3. Deploy the Health Genesis system by running the command
-
-        docker-compose up -d
-
-   in the root of the Health Genesis source directory.
-
-4. Complete the installation by running the script named "finalize.sh"  This
-   script will start the ethereum block chain mining and install sample image
-   data.
-
-5. Add an entry to your hosts file to point auth-proxy to localhost.
