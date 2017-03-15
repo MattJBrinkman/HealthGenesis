@@ -27,10 +27,10 @@ const port = parseInt(process.env.PROXY_PORT) || 9042;
 console.log('Running proxy on port', port, 'in front of ' + opts.target + '...');
 
 http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
     return handleOptionsRequest(req, res);
   }
-  res.setHeader('Access-Control-Allow-Origin', '*');
   // HACKHACKHACK - this is just an example - we're not doing any authorization on QIDO requests.
   const continueOn = isQidoRequest(req) || checkBlockChain(req);
   if (continueOn) {
@@ -53,7 +53,7 @@ function isQidoRequest(req) {
 
 function handleOptionsRequest(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT');
-  const allowedHeaders = req['access-control-allow-headers'];
+  const allowedHeaders = req.headers['access-control-request-headers'];
 
   if (allowedHeaders) {
     res.setHeader('Access-Control-Allow-Headers', allowedHeaders);
