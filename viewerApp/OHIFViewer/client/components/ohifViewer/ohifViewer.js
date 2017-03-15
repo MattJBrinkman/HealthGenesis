@@ -7,6 +7,21 @@ import {ReactiveVar} from "meteor/reactive-var"
 const studylistContentId = 'studylistTab';
 let lastContentId;
 
+var signedHeaders;
+
+cornerstoneWADOImageLoader.configure({
+    beforeSend: function(xhr) {
+        // Add custom headers here (e.g. auth tokens)
+        var ctx = Session.get('ethereumContext');
+        var clonedHeaders = {...signedHeaders};
+        clonedHeaders["x-contractaddresses"] = ctx.wadoContract + ',' + clonedHeaders["x-contractaddresses"];
+        Object.keys(clonedHeaders).forEach((it) => {
+            xhr.setRequestHeader(it, clonedHeaders[it]);
+        });
+    }
+});
+
+
 var userSigned = new ReactiveVar(false);
 
 function hexSigToRSV(hexSig) {
@@ -42,7 +57,7 @@ function signRequest() {
 
     var sig = hexSigToRSV(result);
 
-    var headers = {
+    signedHeaders = {
       "x-secp256k1-r" : sig.r.toString('hex'),
       "x-secp256k1-s" : sig.s.toString('hex'),
       "x-secp256k1-v" : sig.v,
@@ -50,7 +65,7 @@ function signRequest() {
       "x-contractaddresses" : contractAddress1 + ',' + contractAddress2,
     }
 
-    Session.set('signedHeaders', headers);
+    Session.set('signedHeaders', signedHeaders);
     userSigned.set(true);
     console.log(result);
   });
