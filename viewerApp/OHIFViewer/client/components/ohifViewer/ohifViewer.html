@@ -1,4 +1,5 @@
 <template name="ohifViewer">
+  {{#if userSigned}}
     <div class="topBar noselect {{#if onStudyList}}studyList{{/if}}">
         <div class="clearfix">
             <a target='_blank'
@@ -43,4 +44,7 @@
     {{>studylist}}
     {{>aboutModal}}
     {{>viewSeriesDetailsModal}}
+    {{else}}
+      <button id="sign">Sign</button>
+    {{/if}}
 </template>

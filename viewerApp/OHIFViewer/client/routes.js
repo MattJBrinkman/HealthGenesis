@@ -22,13 +22,28 @@ Router.route('/viewer/:_id', {
     name: 'viewer',
     onBeforeAction: function() {
         var studyInstanceUid = this.params._id;
+        var ethereumContext = getEthereumContext(this.params.query.context);
+
+        console.log(`Opening studyUID: ${studyInstanceUid}, ethereumContext: ${JSON.stringify(ethereumContext)}`);
+
+        Session.set('ethereumContext', ethereumContext);
 
         this.render('ohifViewer', {
             data: function() {
                 return {
-                    studyInstanceUid: studyInstanceUid
+                    studyInstanceUid: studyInstanceUid,
+                    ethereumContext: ethereumContext
                 };
             }
         });
     }
 });
+
+function getEthereumContext(blob) {
+    if (!blob) return;
+    try {
+        return JSON.parse(atob(decodeURIComponent(blob)));
+    } catch (e) {
+        console.error(e);
+    }
+}

@@ -1,7 +1,7 @@
-FROM ethereum/client-go
+FROM client-go:v1.5.8
 
 RUN apt-get update &&\
-    apt-get install -y curl git-core libusb-1.0-0-dev &&\
+    apt-get install -y curl git-core &&\
     curl -sL https://deb.nodesource.com/setup_4.x | bash - &&\
     apt-get update &&\
     apt-get install -y nodejs
