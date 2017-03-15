@@ -3,7 +3,7 @@ import loGet from 'lodash/get';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import loginWithEthereum from '../accounts-ethereum/loginWithEthereum.js';
+import loginWithEthereum from '../../imports/accounts-ethereum/client/loginWithEthereum.js';
 
 import Register from '../register';
 import ExamList from '../exam-list';

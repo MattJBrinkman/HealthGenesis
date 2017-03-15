@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import loginWithEthereum from '../accounts-ethereum/loginWithEthereum.js';
+import loginWithEthereum from '../../imports/accounts-ethereum/client/loginWithEthereum.js';
 
 export default class Register extends Component {
   constructor(props) {
@@ -47,4 +47,3 @@ export default class Register extends Component {
     });
   }
 }
-
