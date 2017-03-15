@@ -68,7 +68,7 @@ services:
       - mongovolume:/data/db
     command: --smallfiles
   auth-proxy:
-    image: ulexus/meteor
+    image: docker-meteor
     ports:
       - "9042:9042"
     links:
@@ -106,3 +106,18 @@ services:
       ROOT_URL: "http://localhost:3003"
       MONGO_URL: "mongodb://mongodb:27017/meteor"
       ETH_INSTANCE_URL: "http://bootstrap:8545"
+  viewer-app:
+    image: docker-meteor
+    ports:
+      - "3004:3004"
+    links:
+      - mongodb
+      - auth-proxy
+    volumes:
+      - /tmp/viewerApp/build:/home/meteor/www
+      - ./viewerApp/config:/home/meteor/config
+    environment:
+      PORT: "3004"
+      ROOT_URL: "http://localhost:3004"
+      MONGO_URL: "mongodb://mongodb:27017/meteor"
+      SETTINGS_FILE: "/home/meteor/config/orthancDICOMWebDocker.json"
