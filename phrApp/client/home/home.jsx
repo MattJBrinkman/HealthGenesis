@@ -19,6 +19,10 @@ class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({ initialized: true }), 500);
+  }
+
   render() {
     const { currentUser } = this.context;
     const ethId = loGet(currentUser, 'services.ethereum.address');
@@ -32,11 +36,9 @@ class Home extends Component {
     }
 
     return <div className="home container">
-      <h1>Worklist</h1>
       {isLoggedIn
         ? <ExamList />
         : <div>
-          <h2>Hello Stranger</h2>
           <p>
             Please <button className="btn btn-primary"
                            onClick={this.onRegister}>Register

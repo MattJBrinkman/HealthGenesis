@@ -41,6 +41,7 @@ export default () => {
     //console.log(block);
     var timeStamp = new Date(block.timestamp * 1000);
 
+
     var wadoUriBaseUrl = (resourceType == 'wadouri') ? url : '';
     var dicomWebBaseUrl = (resourceType == 'wadors') ? url : '';
 

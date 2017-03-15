@@ -20,6 +20,10 @@ class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({ initialized: true }), 500);
+  }
+
   render() {
     const { qidoUrl } = this.state;
     const { currentUser } = this.context;
@@ -34,7 +38,7 @@ class Home extends Component {
     }
 
     return <div className="home container">
-      <h1>My Patient Record</h1>
+      <h1>Medical Record Search</h1>
       {isLoggedIn
         ? <div>
           <div className="home__form">
@@ -49,7 +53,6 @@ class Home extends Component {
           <ExamList qidoUrl={qidoUrl} />
         </div>
         : <div>
-          <h2>Hello Stranger</h2>
           <p>
             Please <Register /> or <button className="btn btn-primary"
                                            onClick={this.onLogin}>Login</button>
