@@ -121,3 +121,44 @@ console 3:
 > PROXIED_SERVER=http://pacsemulator.cloudapp.net:8042 meteor --port 3001
 
 Note that port 4444 is ignored here. The actual port to use to connect to Orthanc is 9042.
+
+
+Docker Deployment
+-----------------
+A demo version of Health Genesis can be instantiated as a set of Docker containers.
+This system will be composed of one or more ethereum geth nodes, the eth-netstats
+dashboard, the Orthanc image archive, a mongo database instance and the four
+Health Genesis applications.
+
+This section will describe the process for creating the Health Genesis demo system
+form the supplied source.
+
+System Prerequisites:
+
+1. bash: Installation automation is provided as a set of bash scripts.
+
+2. Meteor.js: The Health Genesis applications are built on the Meteor.js
+   framework. Meteor is installed to provide for the application bundling process.
+
+3. Node.js: Meteor.js and the Health Genesis applications require Node.js
+
+4. Docker: Docker is used as a local deployment and orchestration system.
+
+
+Steps to Build the System:
+
+1. Bundle the Health Genesis applications for deployment by running the bash
+   script named "build.sh" that is found in the root of the Health Genesis
+   source directory.
+
+2. Deploy the Health Genesis system by running the command
+
+        docker-compose up -d
+
+   in the root of the Health Genesis source directory.
+
+3. Complete the installation by running the script named "finalize.sh"  This
+   script will start the ethereum block chain mining and install sample image
+   data.
+
+4. Add an entry to your hosts file to point auth-proxy to localhost.
