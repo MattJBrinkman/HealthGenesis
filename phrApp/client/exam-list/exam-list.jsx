@@ -5,9 +5,22 @@ import loGet from 'lodash/get';
 
 import SharesCollection from '../../imports/sharesCollection';
 
+function createViewerLaunchContext(study) {
+  const payload = {
+    wadoContract: study.wadoUriAddress,
+    wadoRsContract: study.dicomWebAddress,
+    wadoUri: study.wadoUriBaseUrl,
+    wadoRsUri: study.dicomWebBaseUrl
+  };
+
+  return btoa(JSON.stringify(payload));
+}
+
 class ExamList extends Component {
   constructor(props) {
     super(props);
+
+    this.launchViewer = this.launchViewer.bind(this);
 
     this.state = {
     };
@@ -35,13 +48,18 @@ class ExamList extends Component {
       <td>{row.blockNumber}</td>
         <td>{row.resourceId}</td>
         <td>
-          <a href={row.url} target="_blank" className="btn btn-primary">
+          <button className="btn btn-primary" onClick={() => this.launchViewer(row)}>
             <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Images
-          </a>
+          </button>
         </td>
       </tr>)}
       </tbody>
     </table>;
+  }
+
+  launchViewer(study) {
+    const context = createViewerLaunchContext(study);
+    window.open(`http://localhost:3004/viewer/${encodeURIComponent(study.resourceId)}?context=${encodeURIComponent(context)}`);
   }
 }
 
