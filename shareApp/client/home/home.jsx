@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import loGet from 'lodash/get';
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'meteor/react-meteor-data';
 
 import loginWithEthereum from '../../imports/accounts-ethereum/client/loginWithEthereum.js';
 
@@ -23,7 +22,7 @@ class Home extends Component {
 
   render() {
     const { qidoUrl } = this.state;
-    const { currentUser } = this.props;
+    const { currentUser } = this.context;
     const ethId = loGet(currentUser, 'services.ethereum.address');
     const isLoggedIn = !!ethId;
     const hasMetaMask = typeof window.mist === 'undefined' && window.web3;
@@ -36,11 +35,6 @@ class Home extends Component {
 
     return <div className="home container">
       <h1>My Patient Record</h1>
-      {isLoggedIn && <div className="clearfix">
-        <p>Hello, {ethId}
-          <button className="btn btn-primary pull-right" onClick={() => Meteor.logout()}>Log Out</button>
-        </p>
-      </div>}
       {isLoggedIn
         ? <div>
           <div className="home__form">
@@ -75,9 +69,8 @@ class Home extends Component {
   }
 }
 
-export default createContainer(() => {
-  Meteor.subscribe('userData');
-  return {
-    currentUser: Meteor.user()
-  };
-}, Home);
+Home.contextTypes = {
+  currentUser: PropTypes.object
+};
+
+export default Home;
