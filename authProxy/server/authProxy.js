@@ -18,6 +18,8 @@ const validOwners = (() => {
   return [web3.eth.accounts[0]];
 })();
 
+console.log('------------------> VALID OWNERS', validOwners);
+
 // Proxy server which checks the block chain permission and then proxies the request
 const opts = { target: process.env.PROXIED_SERVER };
 
@@ -27,20 +29,30 @@ const port = parseInt(process.env.PROXY_PORT) || 9042;
 console.log('Running proxy on port', port, 'in front of ' + opts.target + '...');
 
 http.createServer((req, res) => {
+  // We just do wide open CORS for demonstration purposes.
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
     return handleOptionsRequest(req, res);
   }
-  // HACKHACKHACK - this is just an example - we're not doing any authorization on QIDO requests.
-  const continueOn = isQidoRequest(req) || checkBlockChain(req);
-  if (continueOn) {
-    console.log('Proxying', req.url);
-    proxy.web(req, res, opts);
-  } else {
-    console.log('refusing to proxy', req.url);
-    res.statusCode = 403;
+  try {
+    // HACKHACKHACK - this is just an example - we're not doing any authorization on QIDO requests.
+    if (!isQidoRequest(req)) {
+      checkBlockChain(req);
+    }
+  } catch (err) {
+    if (err instanceof HttpError) {
+      console.log('refusing to proxy', req.url, 'error:', err);
+      res.statusCode = err.statusCode;
+    } else {
+      console.log('unexpected error:', err);
+      res.statusCode = 500;
+    }
     res.end();
+    return;
   }
+
+  console.log('proxying', req.url);
+  proxy.web(req, res, opts);
 }).listen(port);
 
 function isQidoRequest(req) {
@@ -64,7 +76,7 @@ function handleOptionsRequest(req, res) {
 
 // See https://github.com/chafey/ethereum-signed-http/blob/master/app/server/httpHandler.js
 
-function getTimestamp(req, asInteger = true) {
+function getRequestTimestamp(req, asInteger = true) {
   const timestampString = req.headers['x-timestamp'];
   if (!asInteger) {
     return timestampString;
@@ -80,27 +92,28 @@ function checkTimeStamp(req) {
   const requestTimestamp = getRequestTimestamp(req);
   const now = Date.now();
   const delta = Math.abs(now - requestTimestamp);
-  if (delta > 5000) {
-    console.log('Detected a time skew of more than 5s. Rejecting request');
-    throw new HttpError(403);
+  const timeLimitS = 30;
+  if (delta > (timeLimitS * 1000)) {
+    throw new HttpError(403, 'Detected a time skew of more than ' + timeLimitS +
+      's. Rejecting request');
   }
 }
 
 function getSigFromHeaders(req) {
   return {
-    r: Buffer.from(req.headers['x-secp256k1-r']),
-    s: Buffer.from(req.headers['x-secp256k1-s']),
-    v: Buffer.from(req.headers['x-secp256k1-v'])
+    r: Buffer.from(req.headers['x-secp256k1-r'], 'hex'),
+    s: Buffer.from(req.headers['x-secp256k1-s'], 'hex'),
+    v: parseInt(req.headers['x-secp256k1-v'])
   };
 }
 
 function getContractAddress(req) {
-  return req.headers['x-contract-address'];;
+  return req.headers['x-contractaddress'];
 }
 
 function getMessageHash(req) {
   const contractAddress = getContractAddress(req);
-  const requestTimestamp = getRequestTimestamp(req, false/* leave as string*/);
+  const requestTimestamp = getRequestTimestamp(req, false/* leave as string */);
   const message = contractAddress + requestTimestamp;
   const hash = web3.sha3(message);
   return eutil.toBuffer(hash);
@@ -113,33 +126,31 @@ function getSignerAddress(req, contractAddress) {
   return eutil.bufferToHex(eutil.publicToAddress(publicKey));
 }
 
-function getContractInstance(request) {
+function getContractInstance(req) {
   const contractAddress = getContractAddress(req);
   return resource.contract.at(contractAddress);
 }
 
 function checkOwner(req, instance) {
   if (!validOwners.includes(instance.owner())) {
-    console.log('owner is unknown:', instance.owner());
-    throw HttpError(403);
+    throw new HttpError(403, 'owner is unknown:' + instance.owner());
   }
 }
 
 function checkRecipient(req, instance) {
   const signerAddress = getSignerAddress(req);
   if (instance.recipient() !== signerAddress) {
-    console.log('signer\'s address: "' + signerAddress + '" does not match recipient: "' +
-      instance.recipient() + '"');
-    throw HttpError(403);
+    throw new HttpError(403, 'signer\'s address: "' + signerAddress +
+      '" does not match recipient: "' + instance.recipient() + '"');
   }
 }
 
 function checkUrl(req, instance) {
   const requestUrl = req.url;
-  const instanceUrl = instance.url();
+  const instanceUrl = url.parse(instance.url()).pathname;
+
   if (!requestUrl.startsWith(instanceUrl)) {
-    console.log('client attempted an invalid access to"' + requestUrl + '"');
-    throw new HttpError(403);
+    throw new HttpError(403, 'client attempted an invalid access to "' + requestUrl + '" (1)');
   }
   // Okay, the request URL starts with the contract's registered URL. Need to still check that
   // the request refers to a sub-resource of the contract's URL and isn't just a basic straight
@@ -155,12 +166,15 @@ function checkUrl(req, instance) {
   //
   if ((requestUrl.length > instanceUrl.length) &&
       (requestUrl.length[instanceUrl.length] !== '/')) {
-    console.log('client attempted an invalid access to"' + requestUrl + '"');
-    throw new HttpError(403);
+    throw new HttpError(403, 'client attempted an invalid access to "' + requestUrl + '" (2)');
   }
   // All good
 }
 
 function checkBlockChain(req) {
-  return true;
+  checkTimeStamp(req);
+  const instance = getContractInstance(req);
+  checkOwner(req, instance);
+  checkRecipient(req, instance);
+  checkUrl(req, instance);
 }
