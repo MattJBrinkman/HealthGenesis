@@ -59,10 +59,6 @@ authProxy - A meteor based application that acts as a HTTP proxy to a DICOMWeb
 Running
 -------
 
-The entire system can be brought up with docker
-
-> docker-compose up
-
 Load DICOM files obtained from the The Cancer Imaging Archive (funded by NIH)
 
 > dicomData/pushdata.sh
@@ -145,20 +141,26 @@ System Prerequisites:
 4. Docker: Docker is used as a local deployment and orchestration system.
 
 
-Steps to Build the System:
+Steps to Deploy the System:
 
 1. Bundle the Health Genesis applications for deployment by running the bash
    script named "build.sh" that is found in the root of the Health Genesis
    source directory.
 
-2. Deploy the Health Genesis system by running the command
+2. Create the base ethereum and meteor images by running the command
+
+       docker-compose build -f base.yml
+
+  in the root of the Health Genesis source directory.
+
+3. Deploy the Health Genesis system by running the command
 
         docker-compose up -d
 
    in the root of the Health Genesis source directory.
 
-3. Complete the installation by running the script named "finalize.sh"  This
+4. Complete the installation by running the script named "finalize.sh"  This
    script will start the ethereum block chain mining and install sample image
    data.
 
-4. Add an entry to your hosts file to point auth-proxy to localhost.
+5. Add an entry to your hosts file to point auth-proxy to localhost.
