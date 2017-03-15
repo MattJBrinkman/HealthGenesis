@@ -72,8 +72,6 @@ function handleOptionsRequest(req, res) {
   res.end();
 }
 
-// See https://github.com/chafey/ethereum-signed-http/blob/master/app/server/httpHandler.js
-
 function getRequestTimestamp(req, asInteger = true) {
   const timestampString = req.headers['x-timestamp'];
   if (!asInteger) {
@@ -106,7 +104,7 @@ function getSigFromHeaders(req) {
 }
 
 function getContractAddresses(req) {
-  const list = req.headers['x-contract-addresses'].split(',');
+  const list = req.headers['x-contractaddresses'].split(',');
   for (let i = 0; i < list.length; i++) {
     list[i] = trim(list[i]);
   }
