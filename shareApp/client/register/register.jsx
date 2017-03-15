@@ -19,7 +19,7 @@ export default class Register extends Component {
 
     return isRegistering
       ? <div className="form-group form-inline">
-        <div className="help-block">enter the registration code provided by your doctor (&quot;topsecret&quot;)</div>
+        <div className="help-block">enter the registration code provided by your doctor (use &quot;topsecret&quot;)</div>
         <label className="sr-only">Registration Code</label>
         <input type="text"
                className="form-control"
