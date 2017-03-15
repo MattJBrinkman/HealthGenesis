@@ -19,25 +19,6 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    this.timerId = setInterval(() => {
-      const { currentUser } = this.context;
-      const currentEthId = loGet(currentUser, 'services.ethereum.address');
-      const newEthId = loGet(window, 'web3.eth.accounts[0]');
-      if (currentEthId && newEthId !== currentEthId) {
-        console.log('Ethereum account changed to', ethId);
-        Meteor.logout();
-      }
-    }, 500);
-  }
-
-  componentWillUnmount() {
-    if (this.timerId) {
-      clearInterval(this.timerId);
-      this.timerId = null;
-    }
-  }
-
   render() {
     const { currentUser } = this.context;
     const ethId = loGet(currentUser, 'services.ethereum.address');

@@ -7,7 +7,15 @@ export default new SimpleSchema({
   resourceId: {
     type: String
   },
+  wadoUriAddress: {
+    type: String,
+    optional: true
+  },
   wadoUriBaseUrl: {
+    type: String,
+    optional: true
+  },
+  dicomWebAddress: {
     type: String,
     optional: true
   },
