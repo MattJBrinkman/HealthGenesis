@@ -6,7 +6,7 @@ services:
   client-go:
     build: baseImages/client-go
     image: client-go:v1.5.8
-  client-go:
+  docker-meteor:
     build: baseImages/docker-meteor
     image: docker-meteor
   bootstrap:
