@@ -22,7 +22,7 @@ Router.route('/viewer/:_id', {
     name: 'viewer',
     onBeforeAction: function() {
         var studyInstanceUid = this.params._id;
-        var ethereumContext = getEthereumContext(this.params.query.ethereumContext);
+        var ethereumContext = getEthereumContext(this.params.query.context);
 
         console.log(`Opening studyUID: ${studyInstanceUid}, ethereumContext: ${JSON.stringify(ethereumContext)}`);
 
@@ -47,4 +47,3 @@ function getEthereumContext(blob) {
         console.error(e);
     }
 }
-
