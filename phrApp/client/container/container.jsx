@@ -46,7 +46,7 @@ class Container extends Component {
     return <div className="app-container">
       <div className="header jumbotron">
         <div className="container">
-          <h1>Health Genesis Worklist</h1>
+          <h1>Health Genesis PHR</h1>
         </div>
       </div>
       {isLoggedIn && <div className="container">
