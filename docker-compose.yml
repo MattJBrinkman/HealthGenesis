@@ -8,6 +8,10 @@ services:
     restart: on-failure
     container_name: bootstrap
     hostname: bootstrap
+    ulimits:
+      nofile:
+        soft: 2048
+        hard: 4096
     links:
       - netstats
     entrypoint: /root/start.sh
@@ -24,6 +28,10 @@ services:
   eth:
     build: monitored-geth-client
     restart: on-failure
+    ulimits:
+      nofile:
+        soft: 2048
+        hard: 4096
     links:
       - bootstrap
       - netstats
